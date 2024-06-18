@@ -1,4 +1,5 @@
-// Copyright  (C)  2007  Ruben Smits <ruben dot smits at mech dot kuleuven dot be>
+// Copyright  (C)  2007  Ruben Smits <ruben dot smits at mech dot kuleuven dot
+// be>
 
 // Version: 1.0
 // Author: Ruben Smits <ruben dot smits at mech dot kuleuven dot be>
@@ -22,76 +23,79 @@
 #ifndef KDLCHAINIKSOLVERPOS_NR_HPP
 #define KDLCHAINIKSOLVERPOS_NR_HPP
 
-#include "chainiksolver.hpp"
 #include "chainfksolver.hpp"
+#include "chainiksolver.hpp"
 
-namespace KDL {
+namespace KDL
+{
 
-    /**
-     * Implementation of a general inverse position kinematics
-     * algorithm based on Newton-Raphson iterations to calculate the
-     * position transformation from Cartesian to joint space of a general
-     * KDL::Chain.
-     *
-     * @ingroup KinematicFamily
-     */
-    class ChainIkSolverPos_NR : public ChainIkSolverPos
-    {
-    public:
-        static const int E_IKSOLVER_FAILED = -100; //! Child IK solver vel failed
-        static const int E_FKSOLVERPOS_FAILED = -101; //! Child FK solver failed
+/**
+ * Implementation of a general inverse position kinematics
+ * algorithm based on Newton-Raphson iterations to calculate the
+ * position transformation from Cartesian to joint space of a general
+ * KDL::Chain.
+ *
+ * @ingroup KinematicFamily
+ */
+class ChainIkSolverPos_NR : public ChainIkSolverPos
+{
+public:
+  static const int E_IKSOLVER_FAILED = -100;     //! Child IK solver vel failed
+  static const int E_FKSOLVERPOS_FAILED = -101;  //! Child FK solver failed
 
-        /**
-         * Constructor of the solver, it needs the chain, a forward
-         * position kinematics solver and an inverse velocity
-         * kinematics solver for that chain.
-         *
-         * @param chain the chain to calculate the inverse position for
-         * @param fksolver a forward position kinematics solver
-         * @param iksolver an inverse velocity kinematics solver
-         * @param maxiter the maximum Newton-Raphson iterations,
-         * default: 100
-         * @param eps the precision for the position, used to end the
-         * iterations, default: epsilon (defined in kdl.hpp)
-         *
-         * @return
-         */
-        ChainIkSolverPos_NR(const Chain& chain,ChainFkSolverPos& fksolver,ChainIkSolverVel& iksolver,
-                            unsigned int maxiter=100,double eps=1e-6);
-        ~ChainIkSolverPos_NR();
+  /**
+   * Constructor of the solver, it needs the chain, a forward
+   * position kinematics solver and an inverse velocity
+   * kinematics solver for that chain.
+   *
+   * @param chain the chain to calculate the inverse position for
+   * @param fksolver a forward position kinematics solver
+   * @param iksolver an inverse velocity kinematics solver
+   * @param maxiter the maximum Newton-Raphson iterations,
+   * default: 100
+   * @param eps the precision for the position, used to end the
+   * iterations, default: epsilon (defined in kdl.hpp)
+   *
+   * @return
+   */
+  ChainIkSolverPos_NR(const Chain& chain, ChainFkSolverPos& fksolver, ChainIkSolverVel& iksolver,
+                      unsigned int maxiter = 100, double eps = 1e-6);
+  ~ChainIkSolverPos_NR();
 
-        /**
-         * Find an output joint pose \a q_out, given a starting joint pose
-         * \a q_init and a desired cartesian pose \a p_in
-         *
-         * @return:
-         *  E_NOERROR=solution converged to <eps in maxiter
-         *  E_DEGRADED=solution converged to <eps in maxiter, but solution is
-         *  degraded in quality (e.g. pseudo-inverse in iksolver is singular)
-         *  E_IKSOLVER_FAILED=velocity solver failed
-         *  E_NO_CONVERGE=solution did not converge (e.g. large displacement, low iterations)
-         */
-        virtual int CartToJnt(const JntArray& q_init, const Frame& p_in, JntArray& q_out);
+  /**
+   * Find an output joint pose \a q_out, given a starting joint pose
+   * \a q_init and a desired cartesian pose \a p_in
+   *
+   * @return:
+   *  E_NOERROR=solution converged to <eps in maxiter
+   *  E_DEGRADED=solution converged to <eps in maxiter, but solution is
+   *  degraded in quality (e.g. pseudo-inverse in iksolver is singular)
+   *  E_IKSOLVER_FAILED=velocity solver failed
+   *  E_NO_CONVERGE=solution did not converge (e.g. large displacement, low
+   * iterations)
+   */
+  virtual int CartToJnt(const JntArray& q_init, const Frame& p_in, JntArray& q_out);
 
-        /// @copydoc KDL::SolverI::strError()
-        virtual const char* strError(const int error) const;
+  /// @copydoc KDL::SolverI::strError()
+  virtual const char* strError(const int error) const;
 
-        /// @copydoc KDL::SolverI::updateInternalDataStructures
-        virtual void updateInternalDataStructures();
-    private:
-        const Chain& chain;
+  /// @copydoc KDL::SolverI::updateInternalDataStructures
+  virtual void updateInternalDataStructures();
 
-        unsigned int nj;
-        ChainIkSolverVel& iksolver;
-        ChainFkSolverPos& fksolver;
-        JntArray delta_q;
-        Frame f;
-        Twist delta_twist;
+private:
+  const Chain& chain;
 
-        unsigned int maxiter;
-        double eps;
-    };
+  unsigned int nj;
+  ChainIkSolverVel& iksolver;
+  ChainFkSolverPos& fksolver;
+  JntArray delta_q;
+  Frame f;
+  Twist delta_twist;
 
-}
+  unsigned int maxiter;
+  double eps;
+};
+
+}  // namespace KDL
 
 #endif
