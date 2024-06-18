@@ -36,6 +36,7 @@ list(
   2
   KDL_VERSION_PATCH
 )
+
 message(STATUS "Orocos KDL version ${VERSION} (${KDL_VERSION_MAJOR}.${KDL_VERSION_MINOR}.${KDL_VERSION_PATCH})")
 
 set(PROJ_SOURCE_DIR ${orocos_kdl_SOURCE_DIR})
@@ -161,21 +162,20 @@ configure_file(
 
 install(
   FILES cmake/FindEigen3.cmake
-  DESTINATION share/orocos_kdl/cmake
+  DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/orocos_kdl
 )
 install(
   FILES ${PROJECT_BINARY_DIR}/orocos_kdl-config.cmake
-  DESTINATION share/orocos_kdl/cmake
+  DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/orocos_kdl
 )
 install(
   FILES ${PROJECT_BINARY_DIR}/orocos_kdl-config-version.cmake
-  DESTINATION share/orocos_kdl/cmake
+  DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/orocos_kdl
 )
 install(
   EXPORT OrocosKDLTargets
-  DESTINATION share/orocos_kdl/cmake
+  DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/orocos_kdl
 )
-
 # Generate pkg-config package configuration
 configure_file(
   orocos_kdl.pc.in
