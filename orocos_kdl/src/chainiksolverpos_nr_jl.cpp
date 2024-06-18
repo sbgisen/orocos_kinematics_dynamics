@@ -21,7 +21,7 @@
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
 #include "chainiksolverpos_nr_jl.hpp"
-
+#include <iostream>
 #include <limits>
 
 namespace KDL
@@ -39,6 +39,8 @@ ChainIkSolverPos_NR_JL::ChainIkSolverPos_NR_JL(const Chain& _chain, const JntArr
   , maxiter(_maxiter)
   , eps(_eps)
 {
+  std::cout << "nj_initialized(1): " << nj << std::endl;
+  std::cout << "chain->getNrOfJoints: " << _chain.getNrOfJoints() << std::endl;
 }
 
 ChainIkSolverPos_NR_JL::ChainIkSolverPos_NR_JL(const Chain& _chain, ChainFkSolverPos& _fksolver,
@@ -53,6 +55,7 @@ ChainIkSolverPos_NR_JL::ChainIkSolverPos_NR_JL(const Chain& _chain, ChainFkSolve
   , maxiter(_maxiter)
   , eps(_eps)
 {
+  std::cout << "nj_initialized(2): " << nj << std::endl;
   q_min.data.setConstant(std::numeric_limits<double>::min());
   q_max.data.setConstant(std::numeric_limits<double>::max());
 }
@@ -60,6 +63,7 @@ ChainIkSolverPos_NR_JL::ChainIkSolverPos_NR_JL(const Chain& _chain, ChainFkSolve
 void ChainIkSolverPos_NR_JL::updateInternalDataStructures()
 {
   nj = chain.getNrOfJoints();
+  std::cout << "nj_update: " << nj << std::endl;
   q_min.data.conservativeResizeLike(Eigen::VectorXd::Constant(nj, std::numeric_limits<double>::min()));
   q_max.data.conservativeResizeLike(Eigen::VectorXd::Constant(nj, std::numeric_limits<double>::max()));
   iksolver.updateInternalDataStructures();
@@ -69,6 +73,11 @@ void ChainIkSolverPos_NR_JL::updateInternalDataStructures()
 
 int ChainIkSolverPos_NR_JL::CartToJnt(const JntArray& q_init, const Frame& p_in, JntArray& q_out)
 {
+  std::cout << "~~~~~~~~~~~~~~~~~~~~~~~~~~~~" << std::endl;
+  std::cout << "nj: " << nj << std::endl;
+  std::cout << "chain->getNrOfJoints: " << chain.getNrOfJoints() << std::endl;
+  std::cout << "~~~~~~~~~~~~~~~~~~~~~~~~~~~~" << std::endl;
+
   if (nj != chain.getNrOfJoints())
     return (error = E_NOT_UP_TO_DATE);
 
