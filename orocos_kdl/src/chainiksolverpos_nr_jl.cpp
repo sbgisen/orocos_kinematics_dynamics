@@ -30,7 +30,7 @@ ChainIkSolverPos_NR_JL::ChainIkSolverPos_NR_JL(const Chain& _chain, const JntArr
                                                ChainFkSolverPos& _fksolver, ChainIkSolverVel& _iksolver,
                                                unsigned int _maxiter, double _eps)
   : chain(_chain)
-  , nj(chain.getNrOfJoints())
+  , nj(_chain.getNrOfJoints())
   , q_min(_q_min)
   , q_max(_q_max)
   , iksolver(_iksolver)
@@ -44,12 +44,12 @@ ChainIkSolverPos_NR_JL::ChainIkSolverPos_NR_JL(const Chain& _chain, const JntArr
 ChainIkSolverPos_NR_JL::ChainIkSolverPos_NR_JL(const Chain& _chain, ChainFkSolverPos& _fksolver,
                                                ChainIkSolverVel& _iksolver, unsigned int _maxiter, double _eps)
   : chain(_chain)
-  , nj(chain.getNrOfJoints())
-  , q_min(nj)
-  , q_max(nj)
+  , nj(_chain.getNrOfJoints())
+  , q_min(0)
+  , q_max(0)
   , iksolver(_iksolver)
   , fksolver(_fksolver)
-  , delta_q(nj)
+  , delta_q(_chain.getNrOfJoints())
   , maxiter(_maxiter)
   , eps(_eps)
 {
